@@ -2,18 +2,27 @@
 import { Button, IconButton } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { ChangeEvent, useRef } from 'react';
+import { uploadImage } from '../actions/uploadImage';
 
 
 interface UploadButtonProps {
-  onUpload: (url: string) => void;
   multiple?: boolean;
 }
 
-const UploadButton = ({ onUpload, multiple = false }: UploadButtonProps) => {
+const UploadButton = ({ multiple = false }: UploadButtonProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-      console.log(e);
+       const files = e.target.files;
+       console.log(files);
+       // if !file or length is 0 
+       if(!files || files.length ===0) return;
+       //loop for multiple upload  
+       for(let i = 0 ; i < files.length; i++){
+          const formData = new FormData();
+          formData.append('file', files[i])
+          await uploadImage(formData)
+       }
   };
    
 
