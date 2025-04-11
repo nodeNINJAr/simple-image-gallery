@@ -33,7 +33,7 @@ export default function SearchBar() {
       size="small"
       defaultValue={searchParams.get('search') || ''}
       onChange={handleSearchChange}
-      disabled={isPending}
+    //   disabled={isPending}
     />
   );
 }

@@ -6,11 +6,7 @@ import ClientGallery from './(gallery)/components/ClientGallery';
 
 
 // 
-export default async function GalleryPage({
-
-}: {
-  searchParams: { search?: string };
-}) {
+export default async function GalleryPage() {
    //
    const { images, next_cursor } = await getImages();
    
