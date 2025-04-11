@@ -1,13 +1,13 @@
 'use client';
 
 import { TextField } from '@mui/material';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useTransition } from 'react';
+import { useSearchParams } from 'next/navigation';
+
 
 export default function SearchBar() {
-  const router = useRouter();
+//   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+//   const [isPending, startTransition] = useTransition();
   //    
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const params = new URLSearchParams(searchParams.toString());
