@@ -5,6 +5,8 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ImageModal from './ImageModal';
 import { useState } from 'react';
+import DeleteDialog from './DeleteDialog';
+import { deleteImage } from '../actions/deleteImage';
 
 
 interface ImageGridProps {
@@ -15,8 +17,16 @@ const ImageGrid = ({ images }: ImageGridProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [imageToDelete, setImageToDelete] = useState<string | null>(null);
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  console.log(selectedImage);
+// handle delete image
+const handleDelete = async (public_id: string)=>{
+    setIsLoading(true)
+    await deleteImage(public_id);
+    setIsLoading(false);
+    setImageToDelete(null);
+}
+
   //
   return (
     <>
@@ -95,11 +105,18 @@ const ImageGrid = ({ images }: ImageGridProps) => {
         </Grid>
       ))}
     </Grid>
-
+     {/* img zoom modal */}
     <ImageModal
       open={!!selectedImage}
       imageUrl={selectedImage}
       onClose={() => setSelectedImage(null)}
+    />
+     {/* img delete modal */}
+    <DeleteDialog
+      isLoading={isLoading}
+      open={!!imageToDelete}
+      onClose={() => setImageToDelete(null)}
+      onConfirm={() => handleDelete(imageToDelete!)}
     />
   </>
   );
