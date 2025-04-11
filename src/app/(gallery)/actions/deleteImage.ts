@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function deleteImage(public_id: string) {
   try {
-    const response = await axios.delete(`http://localhost:3000/api/delete`, {
+    const response = await axios.delete(`${process.env.BASE_URL}/api/delete`, {
       data: { public_id }
     });
 

@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function uploadImage(formData: FormData) {
   try {
-    const res = await fetch('http://localhost:3000/api/upload', {
+    const res = await fetch(`${process.env.BASE_URL}/api/upload`, {
       method: 'POST',
       body: formData,
     });
