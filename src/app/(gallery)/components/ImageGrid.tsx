@@ -1,6 +1,7 @@
 'use client';
 
-import { Grid, Card, CardMedia, IconButton, Box } from '@mui/material';
+import { Card, CardMedia, IconButton, Box } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ImageModal from './ImageModal';
@@ -35,13 +36,8 @@ const handleDelete = async (public_id: string)=>{
   return (
     <>
     <Grid container spacing={2}>
-      {images.map((img) => (
-        <Grid 
-          item 
-          xs={12} 
-          sm={6} 
-          md={4} 
-          lg={3} 
+    {images.map((img) => (
+        <Grid  
           key={img.public_id}
           onMouseEnter={() => setHoveredImage(img.public_id)}
           onMouseLeave={() => setHoveredImage(null)}
@@ -127,3 +123,4 @@ const handleDelete = async (public_id: string)=>{
 };
 
 export default ImageGrid;
+

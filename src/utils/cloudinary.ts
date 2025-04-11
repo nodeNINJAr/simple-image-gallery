@@ -7,6 +7,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export interface CloudinaryResource {
+  public_id: string;
+  secure_url: string;
+  created_at?: string;
+  bytes?: number;
+  width?: number;
+  height?: number;
+}
 // Fetch images with pagination support
 export async function getImages(nextCursor?: string) {
   try {
@@ -18,7 +26,7 @@ export async function getImages(nextCursor?: string) {
       next_cursor: nextCursor,
     });
 
-    const images = result.resources.map((img) => ({
+    const images = result.resources.map((img: CloudinaryResource) => ({
       public_id: img.public_id,
       secure_url: img.secure_url,
     }));
