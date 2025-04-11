@@ -7,10 +7,11 @@ import { uploadImage } from '../actions/uploadImage';
 
 interface UploadButtonProps {
   multiple?: boolean;
+  onUploadComplete?: () => void;
 }
  
 // 
-const UploadButton = ({ multiple = false }: UploadButtonProps) => {
+const UploadButton = ({ multiple = false,onUploadComplete  }: UploadButtonProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -24,7 +25,10 @@ const UploadButton = ({ multiple = false }: UploadButtonProps) => {
           const formData = new FormData();
           formData.append('file', files[i])
           await uploadImage(formData);
-          setIsLoading(false)
+          if (onUploadComplete) {
+            await onUploadComplete();
+          }
+          setIsLoading(false);
        }
   };
    

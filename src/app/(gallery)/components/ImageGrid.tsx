@@ -10,10 +10,11 @@ import { deleteImage } from '../actions/deleteImage';
 
 
 interface ImageGridProps {
-  images: { url: string; public_id: string }[];
+  images: { secure_url: string; public_id: string }[];
+  onUploadComplete?: () => void;
 }
 
-const ImageGrid = ({ images }: ImageGridProps) => {
+const ImageGrid = ({ images,onUploadComplete  }: ImageGridProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [imageToDelete, setImageToDelete] = useState<string | null>(null);
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
@@ -23,6 +24,9 @@ const ImageGrid = ({ images }: ImageGridProps) => {
 const handleDelete = async (public_id: string)=>{
     setIsLoading(true)
     await deleteImage(public_id);
+    if (onUploadComplete){
+      await onUploadComplete();
+    } 
     setIsLoading(false);
     setImageToDelete(null);
 }
@@ -45,9 +49,9 @@ const handleDelete = async (public_id: string)=>{
           <Card sx={{ position: 'relative', '&:hover': { boxShadow: 3 } }}>
             <CardMedia
               component="img"
-              image={img.url}
+              image={img.secure_url}
               alt={`Image ${img.public_id}`}
-              onClick={() => setSelectedImage(img.url)}
+              onClick={() => setSelectedImage(img.secure_url)}
               sx={{
                 height: 200,
                 objectFit: 'cover',
@@ -61,7 +65,7 @@ const handleDelete = async (public_id: string)=>{
                 {/* zoom icon */}
                 <IconButton
                   color="error"
-                  onClick={() => setSelectedImage(img.url)}
+                  onClick={() => setSelectedImage(img.secure_url)}
                   sx={{
                     position: 'absolute',
                     top: '50%',

@@ -1,10 +1,14 @@
 import { getImages } from "@/utils/cloudinary";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req:Request) {
+      const {searchParams } = new URL(req.url);
+      const nextCursor = searchParams.get("next_cursor") || undefined;
+      console.log(nextCursor);
+      //   
       try{
-         const images = await getImages();
-         return NextResponse.json(images)
+        const { images, next_cursor } = await getImages(nextCursor);
+        return NextResponse.json({ images, next_cursor });
     }
       catch(err){
         console.error(err)

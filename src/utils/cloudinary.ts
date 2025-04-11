@@ -1,30 +1,39 @@
-import { v2 as cloudinary } from 'cloudinary'
+import { v2 as cloudinary } from 'cloudinary';
 
-// 
+// Cloudinary config
 cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-  // 
-export async function getImages() {
-
-
-  // 
-   try{
+// Fetch images with pagination support
+export async function getImages(nextCursor?: string) {
+  try {
     const result = await cloudinary.api.resources({
-      type:'upload',
-      prefix:'gallery',
-      max_results:500,
+      type: 'upload',
+      prefix: 'gallery',
+      max_results:10,
       resource_type: 'image',
-     }) ;
-    return result.resources
-   }
-   catch (error) {
+      next_cursor: nextCursor,
+    });
+
+    const images = result.resources.map((img) => ({
+      public_id: img.public_id,
+      secure_url: img.secure_url,
+    }));
+
+    return {
+      images,
+      next_cursor: result.next_cursor || null,
+    };
+  } catch (error) {
     console.error('Error fetching images:', error);
-    return [];
+    return {
+      images: [],
+      next_cursor: null,
+    };
   }
 }
 
-  export default cloudinary;
+export default cloudinary;
