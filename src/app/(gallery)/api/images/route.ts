@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function GET(req:Request) {
       const {searchParams } = new URL(req.url);
       const nextCursor = searchParams.get("next_cursor") || undefined;
-      console.log(nextCursor);
       //   
       try{
         const { images, next_cursor } = await getImages(nextCursor);
