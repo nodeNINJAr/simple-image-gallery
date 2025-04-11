@@ -1,40 +1,36 @@
-'use client'
-import { Container, Box, TextField } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import Header from './components/Header';
 import UploadButton from './(gallery)/components/UploadButton';
 import Footer from './components/Footer';
-import { useState } from 'react';
+import ImageGrid from './(gallery)/components/ImageGrid';
+import { getImages } from '@/utils/cloudinary';
 
-interface ImageData {
-  url: string;
+
+interface ImageResource {
   public_id: string;
+  secure_url: string;
 }
 
-export default function Home() {
-  const [searchTrem ,setSearchTerm] = useState('');
-   console.log(searchTrem);
-
-
-  const handleUpload = (url: string) => {
-  
-  };
-
+export default async function GalleryPage({
+  searchParams,
+}: {
+  searchParams: { search?: string };
+}) {
+   //
+  const images: ImageResource[] = await getImages();
 
 
   return (
-    <Box sx={{display: 'flex', flexDirection:'column',  minHeight: '100vh' }}>
-     <Header />
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Header />
       <Container maxWidth="lg" sx={{ py: 4, flex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-          <TextField
-            label="Search images"
-            variant="outlined"
-            size="small"
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <UploadButton onUpload={handleUpload} multiple />
+          <UploadButton multiple />
         </Box>
-      </Container> 
+
+        {/* Image Grid */}
+        <ImageGrid images={images} />
+      </Container>
       <Footer />
     </Box>
   );
